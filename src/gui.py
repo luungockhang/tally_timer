@@ -1,5 +1,6 @@
 from tkinter import *
 import time as t
+from timer import TallyTimer
 
 # Root window config
 root = Tk()
@@ -7,9 +8,10 @@ root.geometry("300x300")
 root.title("Tally Timer")
 # Label, Button, Entry, Text
 status_label = Label(root, text="Standby")
+status_value = StringVar("running")
+status_value_label = Label(root,textvariable=status_value)
 status_label.pack()
 
-# Class?
 
 # Global Variables
 running = False
@@ -20,12 +22,22 @@ total_count = 0
 time_elasped = 0
 avg_time_per_count = 0
 
-# ==== Functions ====
+# ==== UI Functions ====
+# ~ Start Button ~
+"""
+Pressing Start button (re)initializes a TallyTimer instance.
+If the timer is already running, pressing again does nothing
+"""
 def start_button_press():
     global initial_time, current_time, running
-    initial_time = t.time()
-    running = True
+    if not running:
+        initial_time = t.time()
+        running = True
+    # Might want to add a warning about the timer is already running and tell user to press Stop
     
+# ~ Count Button ~
+"""
+"""
 def count_button_press():
     global current_time, initial_time, last_time, total_count, total_count_label
     if running:
@@ -37,23 +49,26 @@ def count_button_press():
         total_count += 1
         
         # Refresh UI
-        refresh_labels()
-# ~ Stop button ~
+        ui_update()
+        
+# ~ Stop button ~ (TODO)
 def stop_button_press():
     global initial_time, current_time, last_time, running, total_count
-    # Reset everything
-    running = False
-    total_count = 0
-    # log here
+    if running:
+        # Reset everything
+        running = False
+        total_count = 0
+        # log here
 
-# ~ Logging functions ~
+# ~ Logging functions ~ (Not impletemented yet)
 def log():
     pass
 
 # ~ Refresh all labels ~
-def refresh_labels():
-    global count_label_content
-    count_label_content.set(f"Count: {total_count}")
+def ui_update():
+    # Make a class called Display for this too maybe
+    global count_value
+    count_value.set(total_count)
     
     
 # Button frame
@@ -78,21 +93,28 @@ Display:
 - average time per count
 """
 display_section = Frame()
-count_label_content = StringVar(value=f"Count: {total_count}")
-count_label = Label(display_section, textvariable=count_label_content)
-count_label.pack()
 
-last_time_content = StringVar(value=f"Last time: {last_time}")
-last_time_label = Label(display_section,textvariable=last_time_content)
-last_time_label.pack()
+"""
+Each of these are labels and values.
+"""
+# Count
+count_label = Label(display_section, text="Count",anchor="w")
+count_label.grid(column=0,row=0)
+count_value = StringVar(value=0)
+count_value_label = Label(display_section, textvariable=count_value)
+count_value_label.grid(column=1,row=0)
 
-time_elasped_content = StringVar(value=f"Time elasped: {time_elasped}")
-time_elasped_label = Label(display_section,textvariable=time_elasped_content)
-time_elasped_label.pack()
+# Last time
+last_time_label = Label(display_section,text="Last time")
+last_time_label.grid(column=0,row=1)
 
-avg_time_per_count_content = StringVar(value=f"Average time per count: {avg_time_per_count}")
-avg_time_per_count_label = Label(display_section,text="Last time: ", textvariable=avg_time_per_count_content)
-avg_time_per_count_label.pack()
+# Time elasped
+time_elasped_label = Label(display_section,text="Time elasped")
+time_elasped_label.grid(column=0,row=2)
+
+# Average time per count
+avg_time_per_count_label = Label(display_section,text="Average time per count")
+avg_time_per_count_label.grid(column=0,row=3)
 
 display_section.pack()
 
