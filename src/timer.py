@@ -8,6 +8,7 @@ class Timer:
         self.time_since_last = 0
         self.current_time = 0
     
+    
     def start(self):
         self.initial_time = time.time()
         self.current_time = self.initial_time

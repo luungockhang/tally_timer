@@ -8,7 +8,7 @@ root.geometry("300x300")
 root.title("Tally Timer")
 # Label, Button, Entry, Text
 status_label = Label(root, text="Standby")
-status_value = StringVar("running")
+status_value = StringVar(value="running")
 status_value_label = Label(root,textvariable=status_value)
 status_label.pack()
 
