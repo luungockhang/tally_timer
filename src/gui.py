@@ -14,6 +14,7 @@ status_label.pack()
 
 
 # Global Variables
+timer_obj = TallyTimer()
 running = False
 initial_time = t.time() # to calculate time per count
 current_time = t.time()
@@ -28,10 +29,9 @@ avg_time_per_count = 0
 Pressing Start button (re)initializes a TallyTimer instance.
 If the timer is already running, pressing again does nothing
 """
-def start_button_press():
-    global initial_time, current_time, running
+def start_button_press(timer_obj, running):
     if not running:
-        initial_time = t.time()
+        timer_obj.start()
         running = True
     # Might want to add a warning about the timer is already running and tell user to press Stop
     
@@ -73,10 +73,10 @@ def ui_update():
     
 # Button frame
 button_menu = Frame()
-start_button = Button(button_menu,text="Start",command=start_button_press)
+start_button = Button(button_menu,text="Start",command=lambda: start_button_press(timer_obj, running))
 start_button.grid(column=0,row=0)
 
-count_button = Button(button_menu, text="Count",command=count_button_press)
+count_button = Button(button_menu, text="Count",command=lambda: count_button_press())
 count_button.grid(column=1,row=0)
 
 stop_button = Button(button_menu,text="Stop", command=stop_button_press)
