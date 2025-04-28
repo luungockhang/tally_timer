@@ -1,11 +1,15 @@
 from tkinter import *
 import time as t
 
+# Root window config
 root = Tk()
 root.geometry("300x300")
+root.title("Tally Timer")
 # Label, Button, Entry, Text
-label = Label(root, text="Average Timer")
-label.pack()
+status_label = Label(root, text="Standby")
+status_label.pack()
+
+# Class?
 
 # Global Variables
 running = False
@@ -60,7 +64,7 @@ start_button.grid(column=0,row=0)
 count_button = Button(button_menu, text="Count",command=count_button_press)
 count_button.grid(column=1,row=0)
 
-stop_button = Button(button_menu,text="stop")
+stop_button = Button(button_menu,text="Stop", command=stop_button_press)
 stop_button.grid(column=2,row=0)
 
 button_menu.pack()
@@ -104,7 +108,12 @@ Enable textbox in the program when logging then disable it
 (TODO)
 """
 logging_section = Frame()
+
 text = Text(logging_section, width=40, height=10)
+# use this to insert text into the textbox
+text.insert('1.0','Press Start to start counting\n')
+# disable the textbox
+text['state'] = 'disabled'
 text.pack()
 
 logging_section.pack()
