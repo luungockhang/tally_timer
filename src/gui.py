@@ -98,23 +98,32 @@ display_section = Frame()
 Each of these are labels and values.
 """
 # Count
-count_label = Label(display_section, text="Count",anchor="w")
-count_label.grid(column=0,row=0)
+count_label = Label(display_section, text="Count")
+count_label.grid(column=0,row=0,sticky="w")
 count_value = StringVar(value=0)
 count_value_label = Label(display_section, textvariable=count_value)
 count_value_label.grid(column=1,row=0)
 
 # Last time
 last_time_label = Label(display_section,text="Last time")
-last_time_label.grid(column=0,row=1)
+last_time_label.grid(column=0,row=1,sticky="w")
+last_time_value = StringVar(value=0)
+last_time_value_label = Label(display_section, textvariable=last_time_value)
+last_time_value_label.grid(column=1,row=1)
 
 # Time elasped
 time_elasped_label = Label(display_section,text="Time elasped")
-time_elasped_label.grid(column=0,row=2)
+time_elasped_label.grid(column=0,row=2,sticky="w")
+time_elasped_value = StringVar(value=0)
+time_elasped_value_label = Label(display_section, textvariable=time_elasped_value)
+time_elasped_value_label.grid(column=1,row=2)
 
 # Average time per count
 avg_time_per_count_label = Label(display_section,text="Average time per count")
-avg_time_per_count_label.grid(column=0,row=3)
+avg_time_per_count_label.grid(column=0,row=3,sticky="w")
+avg_time_per_count_value = StringVar(value=0)
+avg_time_per_count_value_label = Label(display_section, textvariable=avg_time_per_count_value)
+avg_time_per_count_value_label.grid(column=1,row=3)
 
 display_section.pack()
 
