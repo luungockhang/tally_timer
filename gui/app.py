@@ -7,12 +7,14 @@ root.geometry("300x300")
 label = Label(root, text="Average Timer")
 label.pack()
 
-# Variables
+# Global Variables
 running = False
 initial_time = t.time() # to calculate time per count
 current_time = t.time()
 last_time = t.time()
 total_count = 0
+time_elasped = 0
+avg_time_per_count = 0
 
 # ==== Functions ====
 def start_button_press():
@@ -88,6 +90,8 @@ avg_time_per_count_content = StringVar(value=f"Average time per count: {avg_time
 avg_time_per_count_label = Label(display_section,text="Last time: ", textvariable=avg_time_per_count_content)
 avg_time_per_count_label.pack()
 
+display_section.pack()
+
 # Textbox section for logging
 """
 Example:
@@ -99,8 +103,11 @@ Enable textbox in the program when logging then disable it
 
 (TODO)
 """
+logging_section = Frame()
+text = Text(logging_section, width=40, height=10)
+text.pack()
 
-display_section.pack()
+logging_section.pack()
 
 
 
