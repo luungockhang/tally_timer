@@ -4,16 +4,21 @@ import time as t
 from timer import TallyTimer
 from display_render import Display
 import threading as thr
+# Consider adding a Display class that handles the button press methods and global variables
+
 
 # ==== Root window config ====
 root = Tk()
 root.geometry("300x300")
 root.title("Tally Timer")
 # Label, Button, Entry, Text
-status_label = Label(root, text="Standby")
-status_value = StringVar(value="running")
-status_value_label = Label(root,textvariable=status_value)
-status_label.pack()
+status_frame = Frame()
+status_label = Label(status_frame, text="Status: ")
+status_label.grid(column=0,row=0)
+status_value = StringVar(value="Standby")
+status_value_label = Label(status_frame,textvariable=status_value)
+status_value_label.grid(column=1,row=0)
+status_frame.pack()
 
 # ==== Global Variables ====
 timer_obj = TallyTimer()
@@ -32,6 +37,7 @@ def start_button_press(timer_obj):
         timer_obj.start()
         print(timer_obj.initial_time)
         counting = True
+        status_value.set("Counting")
     # Might want to add a warning about the timer is already running and tell user to press Stop
     
 # ~ Count Button ~
@@ -54,19 +60,23 @@ def stop_button_press(timer_obj):
     if counting:
         # Stop counting
         counting = False
+        status_value.set("Stopped")
+        
+        ui_update()
         # Save log here
 
-# ~ Logging functions ~ (Not impletemented yet)
+# ~ Logging methods ~ (Not impletemented yet)
 def log():
     pass
 
 # ~ Refresh all labels ~
 def ui_update():
+    # global timer_obj, count_value, last_time_value, current_duration_value
     # Make a class called Display for this too maybe
-    global timer_obj, count_value
     count_value.set(timer_obj.total)
     last_time_value.set(timer_obj.convert_to_string(Mode.LAST_TIME))
     current_duration_value.set(timer_obj.convert_to_string(Mode.CURRENT_DURATION))
+    speed_value.set(timer_obj.convert_to_string(Mode.SPEED))
     
     
 
@@ -120,14 +130,14 @@ current_duration_value = StringVar(value=0)
 current_duration_value_label = Label(display_section, textvariable=current_duration_value)
 current_duration_value_label.grid(column=1,row=2)
 
-# Average time per count
-avg_time_per_count_label = Label(display_section,text="Speed\n(Count/Time)",anchor="w",justify="left")
-avg_time_per_count_label.grid(column=0,row=3,sticky="w")
-# Label
+# Speed
+speed_label = Label(display_section,text="Speed\n(Count/Time)",justify="left")
+speed_label.grid(column=0,row=3,sticky="nw")
+# Speed grid that displays values
+speed_value = StringVar(value="0/sec\n0/min\n0/hour\n0/day")
+speed_value_label = Label(display_section,textvariable=speed_value)
+speed_value_label.grid(column=1,row=3)
 
-avg_time_per_count_value = StringVar(value=0)
-avg_time_per_count_value_label = Label(display_section, textvariable=avg_time_per_count_value)
-avg_time_per_count_value_label.grid(column=1,row=3)
 
 display_section.pack()
 
