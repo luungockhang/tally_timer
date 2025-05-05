@@ -38,6 +38,7 @@ def start_button_press(timer_obj):
         print(timer_obj.initial_time)
         counting = True
         status_value.set("Counting")
+        ui_update()
     # Might want to add a warning about the timer is already running and tell user to press Stop
     
 # ~ Count Button ~

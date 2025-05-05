@@ -35,11 +35,14 @@ class Timer:
 
 class TallyTimer(Timer):
     def __init__(self):
-        super().__init__()
         self.total = 0              # Count in this instance
         self.last_time = 0          # Time elasped in last count
         self.speed = 0 # Average time per count (speed)
 
+    def start(self):
+        super().start()
+        self.__init__()
+        
     # Calculate last_time, increment count
     def count(self):
         self.total += 1
