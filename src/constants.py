@@ -7,4 +7,4 @@ class Mode(Enum):
     CURRENT_DURATION = 1
     SPEED = 2
 
-DEFAULT_LOG_PATH = "./log/"
+DEFAULT_LOG_PATH = "./logs/"

@@ -27,6 +27,7 @@ class Timer:
     def start(self):
         self.initial_time = time.time()
         self._current_time = self.initial_time
+        self.current_duration = 0
         
 
 class TallyTimer(Timer):

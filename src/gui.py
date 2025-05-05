@@ -1,5 +1,6 @@
 from constants import Mode
 from tkinter import *
+from tkinter import ttk
 import time as t
 from timer import TallyTimer
 from logger import TimerLogger
@@ -25,7 +26,7 @@ status_frame.pack()
 timer_obj = TallyTimer()
 counting = False
 display = Display(timer_obj, status_value,counting)
-log_textbox = ""
+log_textbox = ""    # Workaround for undefined variable
 
 # ==== UI Functions ====
 # ~ Start Button ~
@@ -39,7 +40,7 @@ def start_button_press(timer_obj):
         timer_obj.start()
         counting = True
         status_value.set("Counting")
-        log_textbox.delete('1.0 end')
+        clear_log()
         ui_update()
     # Might want to add a warning about the timer is already running and tell user to press Stop
     
@@ -52,6 +53,7 @@ def count_button_press(timer_obj):
     if counting:
         timer_obj.count()
         ui_update()
+        ui_write_log()
     
     # Writes log
         
@@ -69,19 +71,48 @@ def stop_button_press(timer_obj):
         
         ui_update()
         # Save log here
+        run_name = "default"
+        logger_obj = TimerLogger(run_name,log_textbox.get("1.0","end"))
+        logger_obj.saveToFile()
+        
 
-# ~ Logging methods ~ (Not impletemented yet)
+# ~ Logging method ~
 def ui_write_log():
-    pass
+    count = count_value.get()
+    dur = current_duration_value.get()
+    last = last_time_value.get()
+    s = speed_value.get().split('\n')
+    spd_str = f"{s[0]} / {s[1]} / {s[2]} / {s[3]}"
+    append_log('end',f"Count: {count} | Duration: {dur} | Span: {last} | Speed: {spd_str}\n")
+    log_textbox.see("end wordend")  # Scroll textbox to the end
+    
+def textbox_decorator(func):
+    def wrapper(index, content):
+        log_textbox['state'] = 'normal'
+        func(index, content)
+        log_textbox['state'] = 'disabled'
+    return wrapper
 
-# ~ Refresh all labels ~
+@textbox_decorator
+def delete_log(index,content):
+    log_textbox.delete(index,content)
+
+@textbox_decorator
+def append_log(index, content):
+    log_textbox.insert(index, content)
+
+def clear_log():
+    delete_log('1.0','end')
+
+# ~ UI Update method ~
 def ui_update():
-    # global timer_obj, count_value, last_time_value, current_duration_value
-    # Make a class called Display for this too maybe
+    # (Make a class called Display for this too maybe)
+    # Update stats
     count_value.set(timer_obj.total)
     last_time_value.set(timer_obj.convert_to_string(Mode.LAST_TIME))
     current_duration_value.set(timer_obj.convert_to_string(Mode.CURRENT_DURATION))
     speed_value.set(timer_obj.convert_to_string(Mode.SPEED))
+    
     
     
 
@@ -147,31 +178,30 @@ speed_value_label.grid(column=1,row=3)
 display_section.pack()
 
 # === Textbox section for logging ===
-"""
+'''
 Example:
 Start timer at <current time>
 Count: <count> - Time since last - Time elasped - Average
 End timer at <current time> - Total time
 
 Enable textbox in the program when logging then disable it
+'''
 
-(TODO)
-"""
+# ~ Textbox UI (Log frame) ~
 logging_section = Frame()
-
 log_textbox = Text(logging_section, width=100, height=10)
-# use this to insert text into the textbox
-log_textbox.insert('1.0',
+append_log('1.0',
 '''Press Start to start counting.
 Press Count to increment counts and update logs.
 Press Stop to stop counting and save log.
 ''')
-# disable the textbox
-log_textbox['state'] = 'disabled'
 log_textbox.pack()
+
+# ~ Scrollbar(s) ~
+log_textbox_ys = ttk.Scrollbar(logging_section, orient ='vertical',command=log_textbox.yview)
+log_textbox['yscrollcommand'] = log_textbox_ys.set
 
 logging_section.pack()
 
-# Log frame
 
 root.mainloop()

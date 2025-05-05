@@ -17,13 +17,15 @@ class Logger:
 
 # Currently does not save the name of a run
 class TimerLogger(Logger):
-    def __init__(self):
-        self.run_name = ""
+    def __init__(self, run_name, content):
+        super().__init__()
+        self.run_name = run_name
+        self.content = content
     
     def saveToFile(self):
         p = Path(self.path)
         if not p.exists():
             p.mkdir()
-        file_name = self.run_name + " " + self.log_time_string
+        file_name = self.run_name + self.log_time_string
         p /= file_name
         p.write_text(self.content)
