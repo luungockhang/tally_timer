@@ -2,7 +2,7 @@
 
 import time
 import datetime
-from calculate_mode import Mode
+from constants import Mode
 
 """
 Fields:
@@ -21,34 +21,35 @@ class Timer:
     def __init__(self):
         self.initial_time = 0
         self._current_time = 0
-        self._raw_current_duration = 0
+        self._raw_current_duration = 1
         self.current_duration = 0
     
     def start(self):
         self.initial_time = time.time()
         self._current_time = self.initial_time
-    
-    # def stop(self):
-    #     # Might as well just do nothing here
-    #     self.initial_time = 0
-    #     self.current_time = 0
+        
 
 class TallyTimer(Timer):
     def __init__(self):
+        super().__init__()
         self.total = 0              # Count in this instance
         self.last_time = 0          # Time elasped in last count
-        self.speed = 0 # Average time per count (speed)
+        self.speed = self.calculate_speed() # Average time per count (speed)
 
     def start(self):
         super().start()
-        self.__init__()
+        self.total = 0
+        self.last_time = 0
+        
         
     # Calculate last_time, increment count
     def count(self):
         self.total += 1
         self.last_time = self.convert_to_time(time.time() - self._current_time)
+        print(self._current_time)
         self._current_time = time.time()
         self._raw_current_duration = self._current_time - self.initial_time
+        print(self._raw_current_duration)
         self.current_duration = self.convert_to_time(self._raw_current_duration)
         self.speed = self.calculate_speed()
     

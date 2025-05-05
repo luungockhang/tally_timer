@@ -1,5 +1,5 @@
 # Will handle display later instead of global variables
-# hopefully :D
+# hopefully (not) :D
 
 import timer
 

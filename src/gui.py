@@ -1,7 +1,8 @@
-from calculate_mode import Mode
+from constants import Mode
 from tkinter import *
 import time as t
 from timer import TallyTimer
+from logger import TimerLogger
 from display_render import Display
 import threading as thr
 # Consider adding a Display class that handles the button press methods and global variables
@@ -9,7 +10,7 @@ import threading as thr
 
 # ==== Root window config ====
 root = Tk()
-root.geometry("300x300")
+root.geometry("500x300")
 root.title("Tally Timer")
 # Label, Button, Entry, Text
 status_frame = Frame()
@@ -24,6 +25,7 @@ status_frame.pack()
 timer_obj = TallyTimer()
 counting = False
 display = Display(timer_obj, status_value,counting)
+log_textbox = ""
 
 # ==== UI Functions ====
 # ~ Start Button ~
@@ -35,9 +37,9 @@ def start_button_press(timer_obj):
     global counting
     if not counting:
         timer_obj.start()
-        print(timer_obj.initial_time)
         counting = True
         status_value.set("Counting")
+        log_textbox.delete('1.0 end')
         ui_update()
     # Might want to add a warning about the timer is already running and tell user to press Stop
     
@@ -50,6 +52,8 @@ def count_button_press(timer_obj):
     if counting:
         timer_obj.count()
         ui_update()
+    
+    # Writes log
         
 # ~ Stop button ~ (TODO)
 """
@@ -67,7 +71,7 @@ def stop_button_press(timer_obj):
         # Save log here
 
 # ~ Logging methods ~ (Not impletemented yet)
-def log():
+def ui_write_log():
     pass
 
 # ~ Refresh all labels ~
@@ -155,12 +159,16 @@ Enable textbox in the program when logging then disable it
 """
 logging_section = Frame()
 
-text = Text(logging_section, width=40, height=10)
+log_textbox = Text(logging_section, width=100, height=10)
 # use this to insert text into the textbox
-text.insert('1.0','Press Start to start counting\n')
+log_textbox.insert('1.0',
+'''Press Start to start counting.
+Press Count to increment counts and update logs.
+Press Stop to stop counting and save log.
+''')
 # disable the textbox
-text['state'] = 'disabled'
-text.pack()
+log_textbox['state'] = 'disabled'
+log_textbox.pack()
 
 logging_section.pack()
 
