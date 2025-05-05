@@ -24,4 +24,4 @@ It's also an opportunity to learn more about Tkinter and good practice for Pytho
 2. Implement a timer so you can view how much time has passed in real time.
 3. Turn this app into an .exe
 
-## Thanks for using my app. Feel free to give any feedback, fork, 
+## Thanks for using my app. Feel free to give any feedback or suggestions. Don't forget to give a star if you like it! 
